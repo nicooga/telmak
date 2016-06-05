@@ -24,6 +24,12 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :telmak, Telmak.Repo,
   adapter: Ecto.Adapters.Postgres,
+  username: "postgres",
+  password: "postgres",
   database: "telmak_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+  client_id: "472883078937.apps.googleusercontent.com",
+  client_secret: "G0QZgH221hsMX6HyjCEGN7hI"

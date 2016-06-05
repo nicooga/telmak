@@ -17,9 +17,19 @@ defmodule Telmak.Mixfile do
   #
   # Type `mix help compile.app` for more information.
   def application do
-    [mod: {Telmak, []},
-     applications: [:phoenix, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+    [
+      mod: {Telmak, []},
+      applications: ~w[
+        phoenix
+        cowboy
+        logger
+        gettext
+        phoenix_ecto
+        postgrex
+        ueberauth
+        ueberauth_google
+      ]a
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -30,13 +40,19 @@ defmodule Telmak.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.1.4"},
-     {:postgrex, ">= 0.0.0"},
-     {:phoenix_ecto, "~> 2.0"},
-     {:gettext, "~> 0.9"},
-     {:cowboy, "~> 1.0"},
-     {:ja_serializer, git: "https://github.com/AgilionApps/ja_serializer.git"},
-     {:cors_plug, "~> 1.1"}]
+    [
+      {:phoenix, "~> 1.1.4"},
+      {:postgrex, ">= 0.0.0"},
+      {:phoenix_ecto, "~> 2.0"},
+      {:gettext, "~> 0.9"},
+      {:cowboy, "~> 1.0"},
+      {:ja_serializer, git: "https://github.com/AgilionApps/ja_serializer.git"},
+      {:cors_plug, "~> 1.1"},
+      {:guardian, "~> 0.10.0"},
+      {:inflex, "~> 1.5.0"},
+      {:ueberauth, git: "https://github.com/nicooga/ueberauth.git", override: true},
+      {:ueberauth_google, "~> 0.2"}
+    ]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

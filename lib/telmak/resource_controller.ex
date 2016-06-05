@@ -12,7 +12,7 @@ defmodule Telmak.ResourceController do
         render conn, data: Repo.get(resource_model, id)
       end
 
-      def create(conn, %{"data" => data} = params) do
+      def create(conn, %{"data" => data}) do
         handle_action conn, data, struct(resource_model), action: &(Repo.insert(&1))
       end
 
@@ -28,8 +28,6 @@ defmodule Telmak.ResourceController do
 
       defp handle_action(conn, data, resource, action: action) do
         resource_params = JaSerializer.Params.to_attributes(data)
-        IO.inspect data
-        IO.inspect resource_params
         changeset = resource_model.changeset(resource, resource_params)
 
         case action.(changeset) do
@@ -57,7 +55,7 @@ defmodule Telmak.ResourceController do
       end
 
       defp resource_model do
-        unquote(opts_list) |> Keyword.fetch!(:resource_model)
+        unquote(opts_list |> Keyword.fetch!(:resource_model))
       end
 
       defp after_action_error(resource, resource_params) do

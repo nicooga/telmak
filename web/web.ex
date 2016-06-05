@@ -28,13 +28,11 @@ defmodule Telmak.Web do
 
   def controller do
     quote do
-      use Phoenix.Controller
-
       alias Telmak.Repo
       import Ecto
       import Ecto.Query, only: [from: 1, from: 2]
-
       import Telmak.Router.Helpers
+      use Phoenix.Controller
     end
   end
 
@@ -54,6 +52,7 @@ defmodule Telmak.Web do
   def router do
     quote do
       use Phoenix.Router
+      use Telmak.BaseRouter
     end
   end
 

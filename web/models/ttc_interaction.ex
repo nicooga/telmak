@@ -15,10 +15,10 @@ defmodule Telmak.TtcInteraction do
 
   def changeset(model, params \\ :empty)
 
-  def changeset(model, %{
+  def changeset(model, params = %{
     "type" => "call",
     "metadata" => %{"number" => number }
-   } = params) do
+   }) do
     client =
       PhoneNumber
       |> Repo.find_or_create_by(number: number)

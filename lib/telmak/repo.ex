@@ -3,15 +3,18 @@ defmodule Telmak.Repo do
 
   import Ecto.Query
 
-  def find_or_create_by(queryable, attrs) do
-    attrs
-    |> Enum.reduce(queryable, fn({field, val}, query) ->
-      query |> where([x], field(x, ^field) == ^val)
-    end)
-    |> all()
+  def get_or_create_by!(queryable, attrs) when is_list(attrs),
+    do: get_or_create_by!(queryable, Enum.into(attrs, %{}))
+
+  def get_or_create_by!(queryable, attrs) do
+    queryable
+    |> get_by(attrs)
     |> case do
-      [] -> insert!(struct(queryable, attrs))
-      [record] -> record
+      nil ->
+        struct(queryable)
+        |> queryable.changeset(attrs)
+        |> insert!
+      record -> record
     end
   end
 end
