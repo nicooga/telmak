@@ -46,12 +46,14 @@ defmodule Telmak.User do
   end
 
   def find_or_create_by_auth!(%Ueberauth.Auth{
-    info: %{email: email},
+    info: %{email: email, image: image},
     provider: provider, uid: uid
   }) do
     user =
       __MODULE__
       |> Repo.get_or_create_by!(email: email)
+      |> changeset(%{image: image})
+      |> Repo.update!
 
     identity_attrs = %{
       user_id: user.id,
