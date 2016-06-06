@@ -12,6 +12,10 @@ defmodule Telmak.AuthController do
   end
 
   defp set_token_to_text(conn) do
-    conn |> text(conn.private.guardian_default_jwt)
+    token = conn.private.guardian_default_jwt
+
+    conn
+    |> put_resp_header("Authorization", token)
+    |> text(token)
   end
 end

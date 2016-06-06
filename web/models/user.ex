@@ -4,6 +4,9 @@ defmodule Telmak.User do
 
   schema "users" do
     field :email, :string
+    field :first_name, :string
+    field :last_name, :string
+    field :external_avatar_url, :string
     timestamps
 
     has_many :identities, __MODULE__.Identity, on_delete: :delete_all
@@ -20,7 +23,7 @@ defmodule Telmak.User do
   end
 
   @required_fields ~w(email)
-  @optional_fields ~w(identities phone_number_links)
+  @optional_fields ~w(identities phone_number_links first_name last_name external_avatar_url)
 
   def changeset(model, params \\ :empty) do
     model
@@ -46,14 +49,28 @@ defmodule Telmak.User do
   end
 
   def find_or_create_by_auth!(%Ueberauth.Auth{
-    info: %{email: email, image: image},
+    info: %{
+      email: email,
+      first_name: first_name,
+      last_name: last_name,
+      image: image
+    },
     provider: provider, uid: uid
   }) do
     user =
       __MODULE__
-      |> Repo.get_or_create_by!(email: email)
-      |> changeset(%{image: image})
-      |> Repo.update!
+      |> Repo.get_or_create_by(email: email)
+      |> case do
+        {:created, user} ->
+          user
+          |> changeset(%{
+            external_avatar_url: image,
+            first_name: first_name,
+            last_name: last_name
+          })
+          |> Repo.update!
+        {:gotten, user} -> user
+      end
 
     identity_attrs = %{
       user_id: user.id,

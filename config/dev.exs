@@ -29,7 +29,3 @@ config :telmak, Telmak.Repo,
   database: "telmak_dev",
   hostname: "localhost",
   pool_size: 10
-
-config :ueberauth, Ueberauth.Strategy.Google.OAuth,
-  client_id: "472883078937.apps.googleusercontent.com",
-  client_secret: "G0QZgH221hsMX6HyjCEGN7hI"

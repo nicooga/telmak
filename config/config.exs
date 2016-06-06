@@ -43,7 +43,11 @@ config :ueberauth, Ueberauth,
   providers: [
     google: {Ueberauth.Strategy.Google, [
       callback_methods: ["POST"],
-      callback_path: "/api/auth/google/callback",
+      callback_path: "/auth/google/callback",
       callback_url: "http://localhost:3333"
     ]}
   ]
+
+config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+  client_id: "472883078937.apps.googleusercontent.com",
+  client_secret: "G0QZgH221hsMX6HyjCEGN7hI"
