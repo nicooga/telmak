@@ -24,9 +24,13 @@ defmodule Telmak.Router do
     post "/auth/:provider/callback", AuthController, :callback
 
     scope "/api" do
+      pipe_through :jsonapi
+      ja_resources :users, only: ~w(show update)a
+    end
+
+    scope "/api" do
       pipe_through [:jsonapi, :required_auth]
 
-      ja_resources :users, only: ~w(show update)a
       ja_resources :ttc_interactions
     end
   end
