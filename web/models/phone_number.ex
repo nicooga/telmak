@@ -3,20 +3,23 @@ defmodule Telmak.PhoneNumber do
 
   schema "phone_numbers" do
     field :number, :string
+    field :dont_call, :boolean
     timestamps
   end
 
   @required_fields ~w(number)
-  @optional_fields ~w()
+  @optional_fields ~w(dont_call)
 
-  @doc """
-  Creates a changeset based on the `model` and `params`.
+  def changeset(model, params \\ :empty)
 
-  If no params are provided, an invalid changeset is returned
-  with no validation performed.
-  """
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params) do
     model
-    |> cast(params, @required_fields, @optional_fields)
+    |> cast(prepare_params(params), @required_fields, @optional_fields)
+    |> unique_constraint(:number)
+  end
+
+  defp prepare_params(params) do
+    params
+    |> Map.update("number", nil, &to_string/1)
   end
 end

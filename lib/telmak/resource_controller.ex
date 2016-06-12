@@ -13,12 +13,12 @@ defmodule Telmak.ResourceController do
       end
 
       def create(conn, %{"data" => data}) do
-        handle_action conn, data, struct(resource_model), action: &(Repo.insert(&1))
+        handle_action conn, data, struct(resource_model)
       end
 
       def update(conn, %{"id"=>id, "data"=>data}) do
         struct = Repo.get!(resource_model, id)
-        handle_action conn, data, struct, action: &(Repo.update(&1))
+        handle_action conn, data, struct
       end
 
       def delete(conn, %{"id" => id}) do
@@ -26,7 +26,7 @@ defmodule Telmak.ResourceController do
         send_resp(conn, :no_content, "")
       end
 
-      defp handle_action(conn, data, struct, action: action) do
+      defp handle_action(conn, data, struct) do
         resource_params = JaSerializer.Params.to_attributes(data)
 
         changeset = build_changeset(
@@ -35,7 +35,7 @@ defmodule Telmak.ResourceController do
           Guardian.Plug.current_resource(conn)
         )
 
-        case action.(changeset) do
+        case Repo.insert_or_update(changeset) do
           {:ok, r} ->
             after_action_success r, resource_params
 

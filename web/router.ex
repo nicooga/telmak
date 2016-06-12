@@ -32,6 +32,7 @@ defmodule Telmak.Router do
       pipe_through [:jsonapi, :required_auth]
 
       ja_resources :ttc_interactions
+      ja_resources :phone_numbers
     end
   end
 end
