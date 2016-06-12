@@ -22,8 +22,8 @@ defmodule Telmak.User do
       on_delete: :nilify_all
   end
 
-  @required_fields ~w(email)
-  @optional_fields ~w(identities phone_number_links first_name last_name external_avatar_url)
+  @required_fields ~w()
+  @optional_fields ~w(email identities phone_number_links first_name last_name external_avatar_url)
 
   def changeset(model, params \\ :empty) do
     model
@@ -35,15 +35,17 @@ defmodule Telmak.User do
     |> unique_constraint(:email)
   end
 
-  def find_or_create_by_phone_number(%PhoneNumber{} = pn) do
-    Repo.get(from u in __MODULE__,
-     join: p in assoc(u, :phone_numbers),
-     where: p.id == ^pn.id
-    ) |> case do
-      %__MODULE__{} = user -> user
-       nil->
-        struct(__MODULE__)
-        |> changeset(phone_number_links: %{phone_number_id: pn.id})
+  def get_or_create_by_phone_number(%PhoneNumber{} = pn) do
+    Repo.all(from u in __MODULE__,
+      join: p in assoc(u, :phone_numbers),
+      where: p.id == ^pn.id
+    )
+    |> case do
+      [user] -> user
+      [] ->
+        %__MODULE__{}
+        |> Repo.insert!
+        |> build_assoc(:phone_number_links, phone_number_id: pn.id)
         |> Repo.insert!
     end
   end

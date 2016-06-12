@@ -17,8 +17,8 @@ defmodule Telmak.ResourceController do
       end
 
       def update(conn, %{"id"=>id, "data"=>data}) do
-        resource = Repo.get!(resource_model, id)
-        handle_action conn, data, resource, action: &(Repo.update(&1))
+        struct = Repo.get!(resource_model, id)
+        handle_action conn, data, struct, action: &(Repo.update(&1))
       end
 
       def delete(conn, %{"id" => id}) do
@@ -26,24 +26,44 @@ defmodule Telmak.ResourceController do
         send_resp(conn, :no_content, "")
       end
 
-      defp handle_action(conn, data, resource, action: action) do
+      defp handle_action(conn, data, struct, action: action) do
         resource_params = JaSerializer.Params.to_attributes(data)
-        changeset = resource_model.changeset(resource, resource_params)
+
+        changeset = build_changeset(
+          struct,
+          resource_params,
+          Guardian.Plug.current_resource(conn)
+        )
 
         case action.(changeset) do
-          {:ok, resource} ->
-            after_action_success resource, resource_params
+          {:ok, r} ->
+            after_action_success r, resource_params
 
             conn
-            |> put_resp_header("location", resource_location(conn, resource))
-            |> render(:show, data: resource)
+            |> put_resp_header("location", resource_location(conn, r))
+            |> render(:show, data: r |> preload_assocs)
 
-          {:error, resource} ->
-            after_action_error resource, resource_params
+          {:error, r} ->
+            after_action_error r, resource_params
 
             conn
             |> put_status(:unprocessable_entity)
-            |> render(:errors, data: resource)
+            |> render(:errors, data: r |> preload_assocs)
+        end
+      end
+
+      defp preload_assocs(resource) do
+        case unquote(opts_list) |> Keyword.fetch(:preload_assocs) do
+          {:ok, arg} when is_list(arg) or is_atom(arg) ->
+            Repo.preload(resource, arg)
+          :error -> resource
+        end
+      end
+
+      defp build_changeset(struct, resource_params, current_user) do
+        case get_func_from_opts(:build_changeset) do
+          {:ok, func} -> func.(struct, resource_params, current_user)
+          :not_found -> resource_model.changeset(struct, resource_params)
         end
       end
 

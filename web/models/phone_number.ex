@@ -3,7 +3,6 @@ defmodule Telmak.PhoneNumber do
 
   schema "phone_numbers" do
     field :number, :string
-
     timestamps
   end
 

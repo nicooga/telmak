@@ -3,31 +3,31 @@ defmodule Telmak.TtcInteraction do
   alias Telmak.{Repo, PhoneNumber, User}
 
   schema "ttc_interactions" do
-    field :type, :string
+    field :kind, :string
     timestamps
 
     belongs_to :telemarketer, User
-    belongs_to :client, User
+    belongs_to :customer, User
   end
 
-  @required_fields ~w(telemarketer_id client_id type)
+  @required_fields ~w(telemarketer_id customer_id kind)
   @optional_fields ~w()
 
   def changeset(model, params \\ :empty)
 
   def changeset(model, params = %{
-    "type" => "call",
-    "metadata" => %{"number" => number }
-   }) do
-    client =
+    "kind" => "call",
+    "metadata" => %{"phone_number" => pn}
+  }) do
+    customer =
       PhoneNumber
-      |> Repo.find_or_create_by(number: number)
-      |> User.find_or_create_by_phone_number
+      |> Repo.get_or_create_by!(number: to_string(pn))
+      |> User.get_or_create_by_phone_number
 
     model |> changeset(
       params
       |> Map.delete("metadata")
-      |> Map.put("client_id", client.id)
+      |> Map.put("customer_id", customer.id)
     )
    end
 
