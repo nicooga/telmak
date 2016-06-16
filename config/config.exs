@@ -51,3 +51,6 @@ config :ueberauth, Ueberauth,
 config :ueberauth, Ueberauth.Strategy.Google.OAuth,
   client_id: "472883078937.apps.googleusercontent.com",
   client_secret: "G0QZgH221hsMX6HyjCEGN7hI"
+
+config :ja_serializer, key_format: :underscored
+config :ja_resource, repo: Telmak.Repo

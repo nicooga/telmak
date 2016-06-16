@@ -51,7 +51,8 @@ defmodule Telmak.Mixfile do
       {:guardian, "~> 0.10.0"},
       {:inflex, "~> 1.5.0"},
       {:ueberauth, git: "https://github.com/nicooga/ueberauth.git", override: true},
-      {:ueberauth_google, "~> 0.2"}
+      {:ueberauth_google, "~> 0.2"},
+      {:ja_resource, git: "https://github.com/AgilionApps/ja_resource.git"},
     ]
   end
 

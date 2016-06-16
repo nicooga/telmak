@@ -13,6 +13,7 @@
   "httpoison": {:hex, :httpoison, "0.8.3", "b675a3fdc839a0b8d7a285c6b3747d6d596ae70b6ccb762233a990d7289ccae4", [:mix], [{:hackney, "~> 1.6.0", [hex: :hackney, optional: false]}]},
   "idna": {:hex, :idna, "1.2.0", "ac62ee99da068f43c50dc69acf700e03a62a348360126260e87f2b54eced86b2", [:rebar3], []},
   "inflex": {:hex, :inflex, "1.5.0", "e4ff5d900280b2011b24d1ac1c4590986ee5add2ea644c9894e72213cf93ff0b", [:mix], []},
+  "ja_resource": {:git, "https://github.com/AgilionApps/ja_resource.git", "73c9043a297d3bd289a60d11454de33171e02037", []},
   "ja_serializer": {:git, "https://github.com/AgilionApps/ja_serializer.git", "3cc81d2a7982c1f751785f257ae70d637cb79de0", []},
   "jose": {:hex, :jose, "1.7.5", "f19f890f7aaa1261230af691e2f1e0fc60bf44bce7d34c86022d0efa8875628a", [:mix, :rebar], [{:base64url, "~> 0.0.1", [hex: :base64url, optional: false]}]},
   "metrics": {:hex, :metrics, "1.0.1", "25f094dea2cda98213cecc3aeff09e940299d950904393b2a29d191c346a8486", [:rebar3], []},

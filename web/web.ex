@@ -33,12 +33,23 @@ defmodule Telmak.Web do
       import Ecto.Query, only: [from: 1, from: 2]
       import Telmak.Router.Helpers
       use Phoenix.Controller
+
+      def filter(field, query, value), do: where(query, [%{field => value}])
+      defoverridable filter: 3
+    end
+  end
+
+  def jsonapi_controller do
+    quote do
+      unquote(controller)
+      use JaResource
     end
   end
 
   def view do
     quote do
       use Phoenix.View, root: "web/templates"
+      alias Telmak.Repo
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
@@ -46,6 +57,8 @@ defmodule Telmak.Web do
       import Telmak.Router.Helpers
       import Telmak.ErrorHelpers
       import Telmak.Gettext
+
+      use JaSerializer.PhoenixView
     end
   end
 
