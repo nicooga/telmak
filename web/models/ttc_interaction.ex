@@ -17,19 +17,19 @@ defmodule Telmak.TtcInteraction do
 
   def changeset(model, params = %{
     "kind" => "call",
-    "metadata" => %{"phone_number" => pn}
+    "metadata" => %{"phone_number_id" => pn_id}
   }) do
     customer =
-      PhoneNumber
-      |> Repo.get_or_create_by!(number: to_string(pn))
+      Repo.get!(PhoneNumber, pn_id)
       |> User.get_or_create_by_phone_number
 
-    model |> changeset(
+    changeset(
+      model,
       params
       |> Map.delete("metadata")
       |> Map.put("customer_id", customer.id)
     )
-   end
+  end
 
   def changeset(model, params) do
     model

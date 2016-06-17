@@ -11,18 +11,14 @@ defmodule Telmak.PhoneNumber do
   @optional_fields ~w(dont_call)
 
   def changeset(model, params \\ :empty) do
+    parsed_params = parse_params(model, params)
+
     model
-    |> cast(prepare_params(params), @required_fields, @optional_fields)
+    |> cast(parsed_params, @required_fields, @optional_fields)
     |> unique_constraint(:number)
   end
 
-  def prepare_params(params) do
-    params
-    |> Map.update("number", nil, &to_string/1)
-  end
-
-  def asdf do
-    pn = Telmak.Repo.get_by __MODULE__, number: "47847555"
-    pn |> changeset(%{"dont_call"=>false})
+  defp parse_params(model, params) do
+    params |> Map.update("number", model.number, &to_string/1)
   end
 end

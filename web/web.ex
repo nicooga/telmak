@@ -33,9 +33,6 @@ defmodule Telmak.Web do
       import Ecto.Query, only: [from: 1, from: 2]
       import Telmak.Router.Helpers
       use Phoenix.Controller
-
-      def filter(field, query, value), do: where(query, [%{field => value}])
-      defoverridable filter: 3
     end
   end
 
@@ -43,6 +40,11 @@ defmodule Telmak.Web do
     quote do
       unquote(controller)
       use JaResource
+      import Ecto.Query
+
+      def filter(field, query, value) do
+        where query, ^Map.to_list(%{String.to_atom(field) => value})
+      end
     end
   end
 

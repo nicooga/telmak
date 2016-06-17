@@ -11,7 +11,9 @@ defmodule Telmak.TtcInteractionView do
   def telemarketer(struct, _conn) do
     case struct.telemarketer do
       %Ecto.Association.NotLoaded{} ->
-        struct |> Repo.preload(:telemarketer)
+        struct
+        |> Ecto.assoc(:telemarketer)
+        |> Repo.all
       other -> other
     end
   end
@@ -19,7 +21,9 @@ defmodule Telmak.TtcInteractionView do
   def customer(struct, _conn) do
     case struct.customer do
       %Ecto.Association.NotLoaded{} ->
-        struct |> Repo.preload(:customer)
+        struct
+        |> Ecto.assoc(:customer)
+        |> Repo.all
       other -> other
     end
   end
