@@ -5,6 +5,11 @@ defmodule Telmak.PhoneNumber do
     field :number, :string
     field :dont_call, :boolean
     timestamps
+
+    has_many :phone_number_links, Telmak.User.PhoneNumberLink
+    has_many :users,
+      through: [:phone_number_links, :user],
+      on_delete: :nilify_all
   end
 
   @required_fields ~w(number)

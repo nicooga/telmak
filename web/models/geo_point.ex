@@ -7,11 +7,13 @@ defmodule Telmak.GeoPoint do
     field :floor_number, :integer
     field :apartment_name, :string
 
+    belongs_to :user, Telmak.User
+
     timestamps
   end
 
-  @required_fields ~w(street_name street_number floor_number apartment_name)
-  @optional_fields ~w()
+  @required_fields ~w(street_name street_number)
+  @optional_fields ~w(floor_number apartment_name user_id)
 
   @doc """
   Creates a changeset based on the `model` and `params`.

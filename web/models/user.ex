@@ -20,15 +20,22 @@ defmodule Telmak.User do
     has_many :ttc_interactions_as_client, TtcInteraction,
       foreign_key: :client_id,
       on_delete: :nilify_all
+    has_many :geo_points, Telmak.GeoPoint
   end
 
   @required_fields ~w()
-  @optional_fields ~w(email identities phone_number_links first_name last_name external_avatar_url)
+  @optional_fields ~w(
+    email
+    first_name
+    last_name
+    external_avatar_url
+    identities
+    phone_number_links
+  )
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params) do
     model
-    |> Repo.preload(:identities)
-    |> Repo.preload(:phone_number_links)
+    |> Repo.preload(~w[identities phone_number_links]a)
     |> cast(params, @required_fields, @optional_fields)
     |> cast_assoc(:identities)
     |> cast_assoc(:phone_number_links)
