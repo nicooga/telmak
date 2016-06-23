@@ -1,8 +1,15 @@
 defmodule Telmak.GeoPointView do
   use Telmak.Web, :view
 
-  attributes ~w(id street_name street_number floor_number apartment_name)a
-  has_one :user, serializer: Telmak.UserView, include: true
+  attributes ~w(
+    id
+    street_name
+    street_number
+    floor_number
+    apartment_name
+  )a
+
+  has_one :user, serializer: Telmak.UserView
 
   def type, do: "geo_points"
 

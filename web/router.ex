@@ -16,7 +16,6 @@ defmodule Telmak.Router do
     plug Guardian.Plug.EnsureAuthenticated
   end
 
-
   scope "/", Telmak do
     pipe_through :optional_auth
 
@@ -31,6 +30,7 @@ defmodule Telmak.Router do
       ja_resources :phone_numbers
       ja_resources :commitments
       ja_resources :geo_points
+      resources "/user_phone_number_links", User.PhoneNumberLinkController
     end
   end
 end

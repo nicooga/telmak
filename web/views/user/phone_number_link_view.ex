@@ -1,14 +1,13 @@
-defmodule Telmak.CommitmentView do
+defmodule Telmak.User.PhoneNumberLinkView do
   use Telmak.Web, :view
 
-  attributes ~w(date kind)a
-
-  has_one :telemarketer, serializer: Telmak.UserView
-  has_one :customer, serializer: Telmak.UserView
-  has_one :geo_point, serializer: Telmak.GeoPointView
+  attributes ~w(id phone_number_id user_id)a
+  has_one :user, serializer: Telmak.UserView
   has_one :phone_number, serializer: Telmak.PhoneNumberView
 
-  for assoc <- ~w(telemarketer customer geo_point phone_number)a do
+  def type, do: "user_phone_number_links"
+
+  for assoc <- ~w(user phone_number)a do
     def unquote(assoc)(struct, _conn) do
       case struct.unquote(assoc) do
         %Ecto.Association.NotLoaded{} ->
