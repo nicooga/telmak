@@ -4,6 +4,7 @@ defmodule Telmak.TtcInteraction do
 
   schema "ttc_interactions" do
     field :kind, :string
+    field :date, Ecto.DateTime
     timestamps
 
     belongs_to :telemarketer, User
@@ -11,7 +12,7 @@ defmodule Telmak.TtcInteraction do
     belongs_to :phone_number, PhoneNumber
   end
 
-  @required_fields ~w(telemarketer_id kind)
+  @required_fields ~w(telemarketer_id kind date)
   @optional_fields ~w(phone_number_id customer_id)
 
   def changeset(model, params \\ :empty)

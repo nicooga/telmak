@@ -40,6 +40,7 @@ defmodule Telmak.Web do
     quote do
       unquote(controller)
       use JaResource
+      plug JaResource
       import Ecto.Query
 
       def filter(field, query, value) do
@@ -61,6 +62,7 @@ defmodule Telmak.Web do
       import Telmak.Gettext
 
       use JaSerializer.PhoenixView
+      import Telmak.View
     end
   end
 

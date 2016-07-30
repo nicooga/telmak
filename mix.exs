@@ -47,6 +47,7 @@ defmodule Telmak.Mixfile do
       {:gettext, "~> 0.9"},
       {:cowboy, "~> 1.0"},
       {:ja_serializer, git: "https://github.com/AgilionApps/ja_serializer.git"},
+      #{:ja_serializer, path: "../ja_serializer"},
       {:cors_plug, "~> 1.1"},
       {:guardian, "~> 0.10.0"},
       {:inflex, "~> 1.5.0"},

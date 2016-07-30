@@ -1,30 +1,12 @@
 defmodule Telmak.TtcInteractionView do
   use Telmak.Web, :view
 
-  attributes ~w(kind)a
+  attributes ~w(kind telemarketer_id phone_number_id)a
+  preload [:telemarketer, :customer, :phone_number]
 
   def type, do: "ttc_interactions"
 
   has_one :customer, serializer: Telmak.UserView, include: true
   has_one :telemarketer, serializer: Telmak.UserView, include: true
-
-  def telemarketer(struct, _conn) do
-    case struct.telemarketer do
-      %Ecto.Association.NotLoaded{} ->
-        struct
-        |> Ecto.assoc(:telemarketer)
-        |> Repo.all
-      other -> other
-    end
-  end
-
-  def customer(struct, _conn) do
-    case struct.customer do
-      %Ecto.Association.NotLoaded{} ->
-        struct
-        |> Ecto.assoc(:customer)
-        |> Repo.all
-      other -> other
-    end
-  end
+  has_one :phone_number, serializer: Telmak.PhoneNumberView, include: true
 end
